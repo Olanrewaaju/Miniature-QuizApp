@@ -20,15 +20,14 @@ class GameNotifier extends ChangeNotifier {
       _answer++;
       notifyListeners();
 
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(builder: (_) => QuestionScreen()),
-      //   );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => Result()),
-      );
+      if (_answer >= sampleQuestions.length || _answer >= 8) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => Result()),
+        );
+      } else {
+        notifyListeners();
+      }
     }
   }
 

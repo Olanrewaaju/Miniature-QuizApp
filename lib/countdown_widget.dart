@@ -15,14 +15,16 @@ class _CountdownWidgetState extends State<CountdownWidget> {
     super.initState();
     // Start the timer after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<QuizTimerNotifier>().startTimer();
+      if (mounted) {
+        context.read<QuizTimerNotifier>().startTimer(context);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final timer = context.watch<QuizTimerNotifier>();
-    QuizTimerNotifier().startTimer();
+    // QuizTimerNotifier();
 
     return SizedBox(
       width: 200,
@@ -30,17 +32,20 @@ class _CountdownWidgetState extends State<CountdownWidget> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          CircularProgressIndicator(
-            value: timer.timeLeft / timer.totalSeconds,
-            strokeWidth: 5,
-            backgroundColor: Colors.grey.shade300,
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              Color.fromARGB(255, 16, 62, 140),
+          Transform.scale(
+            scale: 2.3,
+            child: CircularProgressIndicator(
+              value: timer.timeLeft / timer.totalSeconds,
+              strokeWidth: 5,
+              backgroundColor: Colors.grey.shade300,
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color.fromARGB(255, 16, 62, 140),
+              ),
             ),
           ),
           Text(
             "${timer.timeLeft}s",
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           ),
         ],
       ),
